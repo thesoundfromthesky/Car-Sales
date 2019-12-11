@@ -18,7 +18,7 @@ const initialState = {
 };
 
 export function carListReducer(state = initialState, action) {
-  const { car, additionalPrice } = state;
+  const { car, additionalPrice, additionalFeatures } = state;
   const { type, payload } = action;
 
   switch (type) {
@@ -27,7 +27,15 @@ export function carListReducer(state = initialState, action) {
         return {
           ...state,
           additionalPrice: additionalPrice + payload.price,
-          car: { ...car, features: [...car.features, payload] }
+          car: {
+            ...car,
+            features: [...car.features, payload].sort((a, b) =>
+              a.id > b.id ? 1 : -1
+            )
+          },
+          additionalFeatures: additionalFeatures.filter(
+            feature => feature.id !== payload.id
+          )
         };
       }
       return state;
@@ -39,7 +47,10 @@ export function carListReducer(state = initialState, action) {
           car: {
             ...car,
             features: car.features.filter(feature => feature.id !== payload.id)
-          }
+          },
+          additionalFeatures: [...additionalFeatures, payload].sort((a, b) =>
+            a.id > b.id ? 1 : -1
+          )
         };
       }
       return state;
