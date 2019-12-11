@@ -29,9 +29,7 @@ export function carListReducer(state = initialState, action) {
           additionalPrice: additionalPrice + payload.price,
           car: {
             ...car,
-            features: [...car.features, payload].sort((a, b) =>
-              a.id > b.id ? 1 : -1
-            )
+            features: [...car.features, payload].sort((a, b) => a.id - b.id)
           },
           additionalFeatures: additionalFeatures.filter(
             feature => feature.id !== payload.id
@@ -48,8 +46,8 @@ export function carListReducer(state = initialState, action) {
             ...car,
             features: car.features.filter(feature => feature.id !== payload.id)
           },
-          additionalFeatures: [...additionalFeatures, payload].sort((a, b) =>
-            a.id > b.id ? 1 : -1
+          additionalFeatures: [...additionalFeatures, payload].sort(
+            (a, b) => a.id - b.id
           )
         };
       }
